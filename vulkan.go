@@ -25,57 +25,44 @@ import (
 
 // CreateInstance function as declared in https://www.khronos.org/registry/vulkan/specs/1.0/man/html/vkCreateInstance.html
 func CreateInstance(pCreateInfo *InstanceCreateInfo, pAllocator *AllocationCallbacks, pInstance *Instance) Result {
-	cpCreateInfo, cpCreateInfoAllocMap := pCreateInfo.PassRef()
-	cpAllocator, cpAllocatorAllocMap := (*C.VkAllocationCallbacks)(unsafe.Pointer(pAllocator)), cgoAllocsUnknown
-	cpInstance, cpInstanceAllocMap := (*C.VkInstance)(unsafe.Pointer(pInstance)), cgoAllocsUnknown
+	cpCreateInfo, _ := pCreateInfo.PassRef()
+	cpAllocator, _ := (*C.VkAllocationCallbacks)(unsafe.Pointer(pAllocator)), cgoAllocsUnknown
+	cpInstance, _ := (*C.VkInstance)(unsafe.Pointer(pInstance)), cgoAllocsUnknown
 	__ret := C.callVkCreateInstance(cpCreateInfo, cpAllocator, cpInstance)
-	runtime.KeepAlive(cpInstanceAllocMap)
-	runtime.KeepAlive(cpAllocatorAllocMap)
-	runtime.KeepAlive(cpCreateInfoAllocMap)
 	__v := (Result)(__ret)
 	return __v
 }
 
 // DestroyInstance function as declared in https://www.khronos.org/registry/vulkan/specs/1.0/man/html/vkDestroyInstance.html
 func DestroyInstance(instance Instance, pAllocator *AllocationCallbacks) {
-	cinstance, cinstanceAllocMap := *(*C.VkInstance)(unsafe.Pointer(&instance)), cgoAllocsUnknown
-	cpAllocator, cpAllocatorAllocMap := (*C.VkAllocationCallbacks)(unsafe.Pointer(pAllocator)), cgoAllocsUnknown
+	cinstance, _ := *(*C.VkInstance)(unsafe.Pointer(&instance)), cgoAllocsUnknown
+	cpAllocator, _ := (*C.VkAllocationCallbacks)(unsafe.Pointer(pAllocator)), cgoAllocsUnknown
 	C.callVkDestroyInstance(cinstance, cpAllocator)
-	runtime.KeepAlive(cpAllocatorAllocMap)
-	runtime.KeepAlive(cinstanceAllocMap)
 }
 
 // EnumeratePhysicalDevices function as declared in https://www.khronos.org/registry/vulkan/specs/1.0/man/html/vkEnumeratePhysicalDevices.html
 func EnumeratePhysicalDevices(instance Instance, pPhysicalDeviceCount *uint32, pPhysicalDevices []PhysicalDevice) Result {
-	cinstance, cinstanceAllocMap := *(*C.VkInstance)(unsafe.Pointer(&instance)), cgoAllocsUnknown
-	cpPhysicalDeviceCount, cpPhysicalDeviceCountAllocMap := (*C.uint32_t)(unsafe.Pointer(pPhysicalDeviceCount)), cgoAllocsUnknown
-	cpPhysicalDevices, cpPhysicalDevicesAllocMap := copyPPhysicalDeviceBytes((*sliceHeader)(unsafe.Pointer(&pPhysicalDevices)))
+	cinstance, _ := *(*C.VkInstance)(unsafe.Pointer(&instance)), cgoAllocsUnknown
+	cpPhysicalDeviceCount, _ := (*C.uint32_t)(unsafe.Pointer(pPhysicalDeviceCount)), cgoAllocsUnknown
+	cpPhysicalDevices, _ := copyPPhysicalDeviceBytes((*sliceHeader)(unsafe.Pointer(&pPhysicalDevices)))
 	__ret := C.callVkEnumeratePhysicalDevices(cinstance, cpPhysicalDeviceCount, cpPhysicalDevices)
-	runtime.KeepAlive(cpPhysicalDevicesAllocMap)
-	runtime.KeepAlive(cpPhysicalDeviceCountAllocMap)
-	runtime.KeepAlive(cinstanceAllocMap)
 	__v := (Result)(__ret)
 	return __v
 }
 
 // GetPhysicalDeviceFeatures function as declared in https://www.khronos.org/registry/vulkan/specs/1.0/man/html/vkGetPhysicalDeviceFeatures.html
 func GetPhysicalDeviceFeatures(physicalDevice PhysicalDevice, pFeatures *PhysicalDeviceFeatures) {
-	cphysicalDevice, cphysicalDeviceAllocMap := *(*C.VkPhysicalDevice)(unsafe.Pointer(&physicalDevice)), cgoAllocsUnknown
-	cpFeatures, cpFeaturesAllocMap := pFeatures.PassRef()
+	cphysicalDevice, _ := *(*C.VkPhysicalDevice)(unsafe.Pointer(&physicalDevice)), cgoAllocsUnknown
+	cpFeatures, _ := pFeatures.PassRef()
 	C.callVkGetPhysicalDeviceFeatures(cphysicalDevice, cpFeatures)
-	runtime.KeepAlive(cpFeaturesAllocMap)
-	runtime.KeepAlive(cphysicalDeviceAllocMap)
 }
 
 // GetPhysicalDeviceFormatProperties function as declared in https://www.khronos.org/registry/vulkan/specs/1.0/man/html/vkGetPhysicalDeviceFormatProperties.html
 func GetPhysicalDeviceFormatProperties(physicalDevice PhysicalDevice, format Format, pFormatProperties *FormatProperties) {
-	cphysicalDevice, cphysicalDeviceAllocMap := *(*C.VkPhysicalDevice)(unsafe.Pointer(&physicalDevice)), cgoAllocsUnknown
-	cformat, cformatAllocMap := (C.VkFormat)(format), cgoAllocsUnknown
-	cpFormatProperties, cpFormatPropertiesAllocMap := pFormatProperties.PassRef()
+	cphysicalDevice, _ := *(*C.VkPhysicalDevice)(unsafe.Pointer(&physicalDevice)), cgoAllocsUnknown
+	cformat, _ := (C.VkFormat)(format), cgoAllocsUnknown
+	cpFormatProperties, _ := pFormatProperties.PassRef()
 	C.callVkGetPhysicalDeviceFormatProperties(cphysicalDevice, cformat, cpFormatProperties)
-	runtime.KeepAlive(cpFormatPropertiesAllocMap)
-	runtime.KeepAlive(cformatAllocMap)
-	runtime.KeepAlive(cphysicalDeviceAllocMap)
 }
 
 // GetPhysicalDeviceImageFormatProperties function as declared in https://www.khronos.org/registry/vulkan/specs/1.0/man/html/vkGetPhysicalDeviceImageFormatProperties.html
