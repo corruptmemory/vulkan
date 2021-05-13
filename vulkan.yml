@@ -40,12 +40,17 @@ TRANSLATOR:
     defines: expand
   Rules:
     global:
+      - {action: reject, from: "^VkAccelerationStructureInstanceKHR$"}
+      - {action: reject, from: "^VkAccelerationStructureInstanceNV$"}
+      - {action: ignore, from: AccelerationStructureInstance}
       - {action: accept, from: "^Vk"}
       - {action: replace, from: "^Vk"}
       - {action: accept, from: "^MVK"}
       # callbacks (no allocation callbacks cos it's dumb)
       - {action: accept, from: PFN_vkDebugReportCallback}
       - {action: replace, from: PFN_vkDebugReportCallback, to: DebugReportCallbackFunc}
+      - {action: accept, from: PFN_vkDeviceMemoryReportCallback}
+      - {action: replace, from: PFN_vkDeviceMemoryReportCallback, to: DeviceMemoryReportCallback}
       - {action: ignore, from: DebugUtilsMessenger}
       # these in global section so doc will work
       - {action: accept, from: ^callVk}
@@ -85,6 +90,7 @@ TRANSLATOR:
   MemTips:
     - {target: VkAllocationCallbacks, self: raw}
     - {target: DebugUtilsMessengerCallback, self: raw}
+    - {target: DeviceMemoryReportCallback, self: raw}
     - {target: ANativeWindow, self: raw}
   PtrTips:
     function:
@@ -137,5 +143,6 @@ TRANSLATOR:
       - {target: ^callVk, tips: [sref,sref,sref,sref,sref,sref,sref,sref]}
     struct:
       - {target: VkSubpassDescription, tips: [0,0,size,arr,size,arr,arr,ref,size,arr]}
+      - {target: VkAccelerationStructureInstanceKHR, tips: [0,size,size,size,size,0]}
       - {target: VkGraphicsPipelineCreateInfo, tips: [0,0,0,0,arr,ref,ref,ref,ref,ref,ref,ref,ref,ref]}
       - {target: VkInstanceCreateInfo, tips: [0,0,0,ref]}
